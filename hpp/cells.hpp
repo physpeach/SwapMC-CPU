@@ -2,7 +2,7 @@
 #define CELLS_HPP
 
 #include <iostream>
-#include "../hpp/params.hpp"
+#include "../hpp/conf.hpp"
 
 namespace PhysPeach{
     struct Cells{

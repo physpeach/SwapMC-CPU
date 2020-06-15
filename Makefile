@@ -4,8 +4,8 @@ test: testsrc/test.o cpp/particles.o cpp/cells.o
 swapmc: main/main.o cpp/particles.o cpp/cells.o
 	g++ -o $@ $^
 
-%.o: %.cpp hpp/%.cuh hpp/params.hpp
+%.o: %.cpp hpp/%.cuh hpp/conf.hpp
 	g++ -o $@ -c $<
 
-%.o: %.cpp hpp/params.hpp
+%.o: %.cpp hpp/conf.hpp
 	g++ -o $@ -c $<
