@@ -2,26 +2,24 @@
 
 namespace PhysPeach{
     void createParticles(Particles *p){
-        p->diam = (double*)malloc(NP * sizeof(double));
-        p->x = (double*)malloc(D * NP * sizeof(double));
+        p->diam = (double*)malloc(Np * sizeof(double));
+        p->x = (double*)malloc(D * Np * sizeof(double));
 
         //test
-        for (int i = 0; i < NP; i++){
+        for (int i = 0; i < Np; i++){
             p->diam[i] = i;
             p->x[i] = i;
-            p->x[i+NP] = i;
-            p->x[i+2*NP] = i;
+            p->x[i+Np] = i;
         }
         return;
     }
 
     void readParticles(Particles *p){
-        for (int i = 0; i < NP; i++){
+        for (int i = 0; i < Np; i++){
             std::cout << i << " diam: ";
             std::cout << p->diam[i] << ", x1: ";
             std::cout << p->x[i] << ", x2: ";
-            std::cout << p->x[i+NP] << ", x3: ";
-            std::cout << p->x[i+2*NP] << std::endl;
+            std::cout << p->x[i+Np] << std::endl;
         }
         return;
     }

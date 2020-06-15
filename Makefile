@@ -1,4 +1,4 @@
-swapmc: main/main.o cpp/particles.o
+swapmc: main/main.o cpp/particles.o cpp/cells.o
 	g++ -o $@ $^
 
 %.o: %.cpp hpp/%.cuh hpp/params.hpp
