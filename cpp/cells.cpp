@@ -7,10 +7,10 @@ namespace PhysPeach{
         c->Nc = 1;
         c->NpC = 30;
 
-        c->cell = (int*)malloc(c->Nc*c->Nc*(c->NpC + 1)*sizeof(int));
+        c->cell = (int*)malloc(powInt(c->Nc, D)*(c->NpC + 1)*sizeof(int));
 
         //test
-        for(int i = 0; i < c->Nc*c->Nc*(c->NpC + 1); i++){
+        for(int i = 0; i < powInt(c->Nc, D)*(c->NpC + 1); i++){
             c->cell[i] = i;
         }
         return;

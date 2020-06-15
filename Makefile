@@ -1,11 +1,8 @@
-test: testsrc/test.o cpp/particles.o cpp/cells.o
+test: testsrc/test.o cpp/particles.o cpp/cells.o cpp/conf.cpp
 	g++ -o $@ $^
 
-swapmc: main/main.o cpp/particles.o cpp/cells.o
+swapmc: main/main.o cpp/particles.o cpp/cells.o cpp/conf.cpp
 	g++ -o $@ $^
 
-%.o: %.cpp hpp/%.cuh hpp/conf.hpp
-	g++ -o $@ -c $<
-
-%.o: %.cpp hpp/conf.hpp
+%.o: %.cpp hpp/%.hpp
 	g++ -o $@ -c $<
