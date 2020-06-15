@@ -1,3 +1,6 @@
+test: testsrc/test.o cpp/particles.o cpp/cells.o
+	g++ -o $@ $^
+
 swapmc: main/main.o cpp/particles.o cpp/cells.o
 	g++ -o $@ $^
 
