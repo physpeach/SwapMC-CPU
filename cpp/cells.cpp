@@ -15,13 +15,6 @@ namespace PhysPeach{
         }
         return;
     }
-
-    void readCells(Cells *c){
-        for(int i = 0; i < c->Nc*c->Nc*(c->NpC + 1); i++){
-            std::cout << i << " " << c->cell[i] << std::endl;
-        }
-        return;
-    }
     
     void deleteCells(Cells *c){
         free(c->cell);

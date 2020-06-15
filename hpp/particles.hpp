@@ -10,7 +10,6 @@ namespace PhysPeach{
         double *x;
     };
     void createParticles(Particles*);
-    void readParticles(Particles*);
     void deleteParticles(Particles*);
 }
 
