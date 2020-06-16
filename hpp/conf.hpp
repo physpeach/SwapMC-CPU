@@ -1,6 +1,10 @@
 #ifndef CONF_HPP
 #define CONF_HPP
 
+#include <math.h>
+
+const double pi = 3.141592653589793;
+
 const int D = 2;
 const int Np = 300;
 const double  Phi_init = 0.3;

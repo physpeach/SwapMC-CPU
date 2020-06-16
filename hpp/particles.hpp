@@ -9,6 +9,7 @@
 namespace PhysPeach{
     struct Particles{
         double *diam;
+        double V;
         double *x;
     };
     void createParticles(Particles*);

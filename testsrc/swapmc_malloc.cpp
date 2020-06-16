@@ -19,6 +19,7 @@ int main() {
     for(int i = 0; i < s.c.Nc*s.c.Nc*(s.c.NpC + 1); i++){
             std::cout << i << " " << s.c.cell[i] << std::endl;
         }
+    std::cout << "box length: " << s.L << std::endl;
     PhysPeach::deleteSwapMC(&s);
     return 0;
 }

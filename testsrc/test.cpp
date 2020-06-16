@@ -3,31 +3,23 @@
 
 #include "../hpp/conf.hpp"
 #include "../hpp/MT.hpp"
-#include "../hpp/particles.hpp"
+#include "../hpp/swapmc.hpp"
 
 int main() {
     init_genrand((unsigned long)time(NULL));
     std::cout << "hello jamming" << std::endl;
-    PhysPeach::Particles p;
-    PhysPeach::createParticles(&p);
-
-    double diam_min = 100.;
-    double diam_max = 0.;
-    double diam_mean = 0.;
+    PhysPeach::SwapMC s;
+    PhysPeach::createSwapMC(&s);
     for (int i = 0; i < Np; i++){
             std::cout << i << " diam: ";
-            std::cout << p.diam[i] << std::endl;
-            if (p.diam[i] < diam_min) {
-                diam_min = p.diam[i];
-            }
-            if (p.diam[i] > diam_max) {
-                diam_max = p.diam[i];
-            }
-            diam_mean += p.diam[i];
+            std::cout << s.p.diam[i] << ", x1: ";
+            std::cout << s.p.x[i] << ", x2: ";
+            std::cout << s.p.x[i+Np] << std::endl;
         }
-    std::cout << "min: " << diam_min << " ~ " << a_min << std::endl;
-    std::cout << "min: " << diam_max << " ~ " << a_max << std::endl;
-    std::cout << "mean: " << diam_mean /(double)Np << " ~ 1" << std::endl;
-    PhysPeach::deleteParticles(&p);
+    for(int i = 0; i < s.c.Nc*s.c.Nc*(s.c.NpC + 1); i++){
+            std::cout << i << " " << s.c.cell[i] << std::endl;
+        }
+    std::cout << "box length: " << s.L << std::endl;
+    PhysPeach::deleteSwapMC(&s);
     return 0;
 }

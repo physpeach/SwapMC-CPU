@@ -28,6 +28,7 @@ int main() {
     std::cout << "min: " << diam_min << " ~ " << a_min << std::endl;
     std::cout << "min: " << diam_max << " ~ " << a_max << std::endl;
     std::cout << "mean: " << diam_mean /(double)Np << " ~ 1" << std::endl;
+    std::cout << "packing: " << p.V << std::endl;
     PhysPeach::deleteParticles(&p);
     return 0;
 }
