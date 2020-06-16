@@ -1,9 +1,12 @@
 #include <iostream>
+#include <time.h>
 
 #include "../hpp/conf.hpp"
+#include "../hpp/MT.hpp"
 #include "../hpp/cells.hpp"
 
 int main() {
+    init_genrand((unsigned long)time(NULL));
     std::cout << "hello jamming" << std::endl;
     PhysPeach::Cells c;
     PhysPeach::createCells(&c);
