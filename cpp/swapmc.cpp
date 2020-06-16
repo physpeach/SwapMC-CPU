@@ -3,8 +3,8 @@
 namespace PhysPeach {
     void createSwapMC(SwapMC* s){
         createParticles(&s->p);
-        createCells(&s->c);
         s->L = pow(s->p.V/Phi_init, 1./(double)D);
+        createCells(&s->c, s->L);
         return;
     }
 

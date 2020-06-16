@@ -3,23 +3,21 @@
 
 #include "../hpp/conf.hpp"
 #include "../hpp/MT.hpp"
-#include "../hpp/swapmc.hpp"
+#include "../hpp/cells.hpp"
 
 int main() {
     init_genrand((unsigned long)time(NULL));
     std::cout << "hello jamming" << std::endl;
-    PhysPeach::SwapMC s;
-    PhysPeach::createSwapMC(&s);
-    for (int i = 0; i < Np; i++){
-            std::cout << i << " diam: ";
-            std::cout << s.p.diam[i] << ", x1: ";
-            std::cout << s.p.x[i] << ", x2: ";
-            std::cout << s.p.x[i+Np] << std::endl;
+    PhysPeach::Cells c;
+    double L = 30.;
+    PhysPeach::createCells(&c, L);
+    double NoC = (c.NpC + 1) * PhysPeach::powInt(c.Nc, D);
+    for(int i = 0; i < NoC; i++){
+            std::cout << i << " " << c.cell[i] << std::endl;
         }
-    for(int i = 0; i < s.c.Nc*s.c.Nc*(s.c.NpC + 1); i++){
-            std::cout << i << " " << s.c.cell[i] << std::endl;
-        }
-    std::cout << "box length: " << s.L << std::endl;
-    PhysPeach::deleteSwapMC(&s);
+    std::cout << "Nc: " << c.Nc << std::endl;
+    std::cout << "Lc: " << c.Lc << " > " << 2. * a_max << std::endl;
+    std::cout << "NpC: " << c.NpC << std::endl;
+    PhysPeach::deleteCells(&c);
     return 0;
 }

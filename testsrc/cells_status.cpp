@@ -9,10 +9,15 @@ int main() {
     init_genrand((unsigned long)time(NULL));
     std::cout << "hello jamming" << std::endl;
     PhysPeach::Cells c;
-    PhysPeach::createCells(&c);
-    for(int i = 0; i < c.Nc*c.Nc*(c.NpC + 1); i++){
+    double L = 30.;
+    PhysPeach::createCells(&c, L);
+    double NoC = (c.NpC + 1) * PhysPeach::powInt(c.Nc, D);
+    for(int i = 0; i < NoC; i++){
             std::cout << i << " " << c.cell[i] << std::endl;
         }
+    std::cout << "Nc: " << c.Nc << std::endl;
+    std::cout << "Lc: " << c.Lc << " > " << 2. * a_max << std::endl;
+    std::cout << "NpC: " << c.NpC << std::endl;
     PhysPeach::deleteCells(&c);
     return 0;
 }

@@ -1,16 +1,16 @@
 #include "../hpp/cells.hpp"
 
 namespace PhysPeach{
-    void createCells(Cells *c){
-        //test
-        c->Lc = 2.5;
-        c->Nc = 1;
-        c->NpC = 30;
+    void createCells(Cells *c, double L){
+        c->Nc = (int)(L/(2. * a_max));
+        c->Lc = L/(double)c->Nc;
+        double buf = 2.3;
+        c->NpC = (int)(buf * (double)Np/ (double)powInt(c->Nc, D));
+        double NoA = powInt(c->Nc, D)*(c->NpC + 1);
+        c->cell = (int*)malloc(NoA*sizeof(int));
 
-        c->cell = (int*)malloc(powInt(c->Nc, D)*(c->NpC + 1)*sizeof(int));
-
         //test
-        for(int i = 0; i < powInt(c->Nc, D)*(c->NpC + 1); i++){
+        for(int i = 0; i < NoA; i++){
             c->cell[i] = i;
         }
         return;

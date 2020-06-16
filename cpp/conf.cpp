@@ -11,6 +11,7 @@ namespace PhysPeach{
                 result /= a;
             }
         }
+        return result;
     }
     template int powInt<int>(int, int);
     template double powInt<double>(double, int);
