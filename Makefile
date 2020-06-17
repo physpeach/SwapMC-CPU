@@ -1,7 +1,7 @@
-test: testsrc/test.o cpp/conf.o cpp/MT.o cpp/particles.o cpp/cells.o cpp/swapmc.cpp
+test: testsrc/test.o cpp/conf.o cpp/MT.o cpp/particles.o cpp/cells.o cpp/swapmc.o
 	g++ -o $@ $^
 
-swapmc: main/main.o cpp/conf.o cpp/MT.o cpp/particles.o cpp/cells.o cpp/swapmc.cpp
+swapmc: main/main.o cpp/conf.o cpp/MT.o cpp/particles.o cpp/cells.o cpp/swapmc.o
 	g++ -o $@ $^
 
 %.o: %.cpp hpp/%.hpp
