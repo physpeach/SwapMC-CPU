@@ -11,7 +11,7 @@ namespace PhysPeach{
         int Nc;
         int NpC;
     };
-    void createCells(Cells*, double);
+    int createCells(Cells*, double);
     void deleteCells(Cells*);
 }
 #endif

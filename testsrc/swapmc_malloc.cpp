@@ -14,9 +14,16 @@ int main() {
             std::cout << i << " diam: ";
             std::cout << s.p.diam[i] << ", x1: ";
             std::cout << s.p.x[i] << ", x2: ";
-            std::cout << s.p.x[i+Np] << std::endl;
+            if(D == 2){
+                 std::cout << s.p.x[i+Np] << std::endl;
+            }
+            else if(D == 3){
+                std::cout << s.p.x[i+Np] << ", x3: ";
+                 std::cout << s.p.x[i+2*Np] << std::endl;
+            }
         }
-    for(int i = 0; i < s.c.Nc*s.c.Nc*(s.c.NpC + 1); i++){
+    int NoC = (c.NpC + 1) * PhysPeach::powInt(c.Nc, D);
+    for(int i = 0; i < Noc; i++){
             std::cout << i << " " << s.c.cell[i] << std::endl;
         }
     std::cout << "box length: " << s.L << std::endl;

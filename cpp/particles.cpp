@@ -22,4 +22,42 @@ namespace PhysPeach{
         free(p->x);
         return;
     }
+
+    void scatterParticles(Particles *p, double L, int Nc){
+        int NcD = powInt(Nc, D);
+        int NpC = Np / NcD;
+        double Lc = L / (double)Nc;
+
+        for(int i = 0; i < Nc; i++){
+            for(int j = 0; j < Nc; j++){
+                if(D == 2){
+                    for(int m = 0; m < NpC; m++){
+                        p->x[(i*Nc+j)*NpC+m] = (i + genrand_real1()) * Lc - 0.5 * L;
+                        p->x[(i*Nc+j)*NpC+m+Np] = (j + genrand_real1()) * Lc - 0.5 * L;
+                    }
+                }
+                else if(D == 3){
+                    for(int k = 0; k < Nc; k++){
+                        for(int m = 0; m < NpC; m++){
+                            p->x[((i*Nc+j)*Nc + k)*NpC+m] = (i + genrand_real1()) * Lc - 0.5 * L;
+                            p->x[((i*Nc+j)*Nc + k)*NpC+m+Np] = (j + genrand_real1()) * Lc - 0.5 * L;
+                            p->x[((i*Nc+j)*Nc + k)*NpC+m+Np] = (k + genrand_real1()) * Lc - 0.5 * L;
+                        }
+                    }
+                }
+                else{
+                    std::cout << "dimention err" << std::endl;
+                    exit(1);
+                }
+            }
+        }
+        for(int m = NpC*powInt(Nc,D); m < Np; m++){
+            p->x[m] = (genrand_real1() - 0.5 )* L;
+            p->x[m+Np] = (genrand_real1() - 0.5) * L;
+            if(D == 3){
+                p->x[m+2*Np] = (genrand_real1() - 0.5) * L;
+            }
+        }
+        return;
+    }
 }

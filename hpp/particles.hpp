@@ -14,6 +14,7 @@ namespace PhysPeach{
     };
     void createParticles(Particles*);
     void deleteParticles(Particles*);
+    void scatterParticles(Particles*, double, int);
 }
 
 #endif

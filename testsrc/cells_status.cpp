@@ -11,7 +11,7 @@ int main() {
     PhysPeach::Cells c;
     double L = 30.;
     PhysPeach::createCells(&c, L);
-    double NoC = (c.NpC + 1) * PhysPeach::powInt(c.Nc, D);
+    int NoC = (c.NpC + 1) * PhysPeach::powInt(c.Nc, D);
     for(int i = 0; i < NoC; i++){
             std::cout << i << " " << c.cell[i] << std::endl;
         }

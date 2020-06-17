@@ -1,7 +1,7 @@
 #include "../hpp/cells.hpp"
 
 namespace PhysPeach{
-    void createCells(Cells *c, double L){
+    int createCells(Cells *c, double L){
         c->Nc = (int)(L/(2. * a_max));
         c->Lc = L/(double)c->Nc;
         double buf = 2.3;
@@ -13,7 +13,7 @@ namespace PhysPeach{
         for(int i = 0; i < NoA; i++){
             c->cell[i] = i;
         }
-        return;
+        return c->Nc;
     }
     
     void deleteCells(Cells *c){
