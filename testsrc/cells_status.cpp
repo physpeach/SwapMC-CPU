@@ -16,7 +16,7 @@ int main() {
             std::cout << i << " " << c.cell[i] << std::endl;
         }
     std::cout << "Nc: " << c.Nc << std::endl;
-    std::cout << "Lc: " << c.Lc << " > " << 2. * a_max << std::endl;
+    std::cout << "Lc: " << L/c.Nc << " > " << 2. * a_max << std::endl;
     std::cout << "NpC: " << c.NpC << std::endl;
     PhysPeach::deleteCells(&c);
     return 0;

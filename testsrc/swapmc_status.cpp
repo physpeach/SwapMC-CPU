@@ -22,7 +22,7 @@ int main() {
                  std::cout << s.p.x[i+2*Np] << std::endl;
             }
         }
-    int NoC = (c.NpC + 1) * PhysPeach::powInt(c.Nc, D);
+    int NoC = PhysPeach::powInt(c.Nc, D)*s.c.NpC;
     for(int i = 0; i < Noc; i++){
             std::cout << i << " " << s.c.cell[i] << std::endl;
         }

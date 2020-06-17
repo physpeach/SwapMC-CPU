@@ -5,6 +5,7 @@ namespace PhysPeach {
         createParticles(&s->p);
         s->L = pow(s->p.V/Phi_init, 1./(double)D);
         scatterParticles(&s->p, s->L, createCells(&s->c, s->L));
+        updateCells(&s->c, s->L, s->p.x);
         return;
     }
 

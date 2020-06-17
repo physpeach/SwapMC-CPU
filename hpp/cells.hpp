@@ -7,11 +7,11 @@
 namespace PhysPeach{
     struct Cells{
         int *cell;
-        double Lc;
         int Nc;
         int NpC;
     };
     int createCells(Cells*, double);
     void deleteCells(Cells*);
+    void updateCells(Cells*, double, double*);
 }
 #endif
