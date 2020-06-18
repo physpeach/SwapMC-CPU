@@ -12,9 +12,13 @@ namespace PhysPeach{
         Particles p;
         Cells c;
         double L;
+        double T;
+        int trial;
+        int accept;
     };
     void createSwapMC(SwapMC*);
     void deleteSwapMC(SwapMC*);
+    void updateSwapMC(SwapMC*);
 }
 
 #endif

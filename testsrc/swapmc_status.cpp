@@ -10,6 +10,9 @@ int main() {
     std::cout << "hello jamming" << std::endl;
     PhysPeach::SwapMC s;
     PhysPeach::createSwapMC(&s);
+    for(int i = 0; i < 100; i++){
+        PhysPeach::updateSwapMC(&s);
+    }
     for (int i = 0; i < Np; i++){
             std::cout << i << " diam: ";
             std::cout << s.p.diam[i] << ", x1: ";
@@ -22,8 +25,8 @@ int main() {
                  std::cout << s.p.x[i+2*Np] << std::endl;
             }
         }
-    int NoC = PhysPeach::powInt(c.Nc, D)*s.c.NpC;
-    for(int i = 0; i < Noc; i++){
+    int NoC = PhysPeach::powInt(s.c.Nc, D)*s.c.NpC;
+    for(int i = 0; i < NoC; i++){
             std::cout << i << " " << s.c.cell[i] << std::endl;
         }
     std::cout << "box length: " << s.L << std::endl;

@@ -2,6 +2,7 @@
 
 namespace PhysPeach{
     void createParticles(Particles *p){
+        p->dr = 1.;
         p->diam = (double*)malloc(Np * sizeof(double));
         p->x = (double*)malloc(D * Np * sizeof(double));
 
@@ -22,7 +23,7 @@ namespace PhysPeach{
         free(p->x);
         return;
     }
-
+    
     void scatterParticles(Particles *p, double L, int Nc){
         int NcD = powInt(Nc, D);
         int NpC = Np / NcD;
@@ -57,6 +58,20 @@ namespace PhysPeach{
             if(D == 3){
                 p->x[m+2*Np] = (genrand_real1() - 0.5) * L;
             }
+        }
+        return;
+    }
+
+    void swapDiam(Particles* p, int i, int j){
+        double tmpdiam = p->diam[i];
+        p->diam[i] = p->diam[j];
+        p->diam[j] = tmpdiam;
+        return;
+    }
+
+    void kickParticle(Particles* p, int i, double* rnd){
+        for(int d = 0; d < D; d++){
+            p->x[i+d*Np] += p->dr * rnd[d];
         }
         return;
     }

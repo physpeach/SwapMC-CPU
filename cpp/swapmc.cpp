@@ -1,7 +1,80 @@
 #include "../hpp/swapmc.hpp"
 
 namespace PhysPeach {
+    double Upartial(SwapMC* s, int n){
+        int m;
+        double xij[D], rij, rij2, aij;
+        int ic, jc, kc;
+        int list;
+        double U = 0;
+        double Lh = 0.5 * s->L;
+        double Lc = s->L / s->c.Nc;
+
+        ic = (s->p.x[n] + Lh)/Lc;
+        jc = (s->p.x[n+Np] + Lh)/Lc;
+        kc = 0;
+        if(D == 3){
+            kc = (s->p.x[n+Np] + Lh)/Lc;
+        }
+
+        for(int i = ic - 1; i < ic + 1; i++){
+            for(int j = jc - 1; j < jc + 1; j++){
+                if(D == 2){
+                    list = (((i+s->c.Nc)%s->c.Nc)*s->c.Nc+((j+s->c.Nc)%s->c.Nc))*s->c.NpC;
+                    for(int l = 1; l <= s->c.cell[list]; l++){
+                        m = s->c.cell[list+l];
+                        if(n != m){
+                            xij[0] = s->p.x[j] - s->p.x[i];
+                            xij[1] = s->p.x[Np+j] - s->p.x[Np+i];
+                            if(xij[0] > Lh){xij[0] -= s->L;}
+                            if(xij[1] > Lh){xij[1] -= s->L;}
+                            if(xij[0] < -Lh){xij[0] += s->L;}
+                            if(xij[1] < -Lh){xij[1] += s->L;}
+                            rij2 = xij[0]*xij[0] + xij[1]*xij[1];
+                            aij = 0.5 * (s->p.diam[i] + s->p.diam[j]);
+                            if(rij2 < aij * aij){
+                                rij = sqrt(rij2);
+                                U += 0.5 * (1 - rij/aij) * (1 - rij/aij);
+                            }
+                        }
+                    }
+                }else if (D == 3){
+                    for(int k = kc - 1; k < kc + 1; k++){
+                        list = ((((i+s->c.Nc)%s->c.Nc)*s->c.Nc+((j+s->c.Nc)%s->c.Nc))*s->c.Nc + ((k+s->c.Nc)%s->c.Nc))*s->c.NpC;
+                        for(int l = 1; l <= s->c.cell[list]; l++){
+                            m = s->c.cell[list+l];
+                            if(n != m){
+                                xij[0] = s->p.x[j] - s->p.x[i];
+                                xij[1] = s->p.x[Np+j] - s->p.x[Np+i];
+                                xij[2] = s->p.x[2*Np+j] - s->p.x[2*Np+i];
+                                if(xij[0] > Lh){xij[0] -= s->L;}
+                                if(xij[1] > Lh){xij[1] -= s->L;}
+                                if(xij[2] > Lh){xij[2] -= s->L;}
+                                if(xij[0] < -Lh){xij[0] += s->L;}
+                                if(xij[1] < -Lh){xij[1] += s->L;}
+                                if(xij[2] < -Lh){xij[2] += s->L;}
+                                rij2 = xij[0]*xij[0] + xij[1]*xij[1] + xij[2]*xij[2];
+                                aij = 0.5 * (s->p.diam[i] + s->p.diam[j]);
+                                if(rij2 < aij * aij){
+                                    rij = sqrt(rij2);
+                                    U += 0.5 * (1 - rij/aij) * (1 - rij/aij);
+                                }
+                            }
+                        }
+                    }
+                } else{
+                    std::cout << "dimention err" << std::endl;
+                    exit(1);
+                }
+            }
+        }
+
+        return U;
+    }
     void createSwapMC(SwapMC* s){
+        s->T = T;
+        s->trial = 0;
+        s->accept = 0;;
         createParticles(&s->p);
         s->L = pow(s->p.V/Phi_init, 1./(double)D);
         scatterParticles(&s->p, s->L, createCells(&s->c, s->L));
@@ -12,6 +85,61 @@ namespace PhysPeach {
     void deleteSwapMC(SwapMC* s){
         deleteParticles(&s->p);
         deleteCells(&s->c);
+        return;
+    }
+
+    void updateSwapMC(SwapMC* s){
+        double Up, Uptry;
+        double judge;
+
+        int i = genrand_int32()%Np;
+        Up = Upartial(s, i);
+
+        //swap algorithm
+        bool swap = (genrand_real1() < 0.2);
+        if (swap) {
+            //swap diam case
+            int j = i;
+            while(j == i){
+                j = genrand_int32()%Np;
+            }
+            Up += Upartial(s, j);
+            swapDiam(&s->p, i, j);
+            Uptry = Upartial(s, i) + Upartial(s, j);
+
+            judge = exp(-(Uptry - Up)/T);
+            if(judge < genrand_real2()){
+                //reject
+                swapDiam(&s->p, i, j);
+            }else{
+                s->accept++;
+            }
+        }else{
+            //kick a particle case
+            double rnd[D], rndlen2;
+            rndlen2 = 2;
+            while (rndlen2 > 1){
+                rndlen2 = 0;
+                for(int d = 0; d < D; d++){
+                    rnd[d] = genrand_real1();
+                    rndlen2 += rnd[d] * rnd[d];
+                }
+            }
+            kickParticle(&s->p, i, rnd);
+            Uptry = Upartial(s, i);
+
+            judge = exp(-(Uptry - Up)/T);
+            if(judge < genrand_real2()){
+                //reject
+                for(int d = 0; d < D; d++){
+                    rnd[d] = -rnd[d];
+                }
+                kickParticle(&s->p, i, rnd);
+            }else{
+                s->accept++;
+            }
+        }
+        s->trial++;
         return;
     }
 }

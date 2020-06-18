@@ -11,10 +11,13 @@ namespace PhysPeach{
         double *diam;
         double V;
         double *x;
+        double dr;
     };
     void createParticles(Particles*);
     void deleteParticles(Particles*);
     void scatterParticles(Particles*, double, int);
+    void swapDiam(Particles*, int, int);
+    void kickParticle(Particles*, int, double*);
 }
 
 #endif
