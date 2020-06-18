@@ -2,9 +2,10 @@
 
 namespace PhysPeach{
     void createParticles(Particles *p){
-        p->dr = 1.;
+        p->dr = 0.1 * a_max;
         p->diam = (double*)malloc(Np * sizeof(double));
         p->x = (double*)malloc(D * Np * sizeof(double));
+        p->mem = (double*)malloc(D * Np * sizeof(double));
 
         p->V = 0;
         for (int i = 0; i < Np; i++){
@@ -14,6 +15,7 @@ namespace PhysPeach{
             p->x[i] = i;
             p->x[i+Np] = i;
         }
+        memcpy(p->mem, p->x, D * Np * sizeof(double));
         p->V *= 0.5 * pi / D;
         return;
     }
@@ -21,6 +23,7 @@ namespace PhysPeach{
     void deleteParticles(Particles *p){
         free(p->diam);
         free(p->x);
+        free(p->mem);
         return;
     }
     
@@ -59,6 +62,7 @@ namespace PhysPeach{
                 p->x[m+2*Np] = (genrand_real1() - 0.5) * L;
             }
         }
+        memcpy(p->mem, p->x, D * Np * sizeof(double));
         return;
     }
 
@@ -72,11 +76,31 @@ namespace PhysPeach{
     void kickParticle(Particles* p, int i, double* rnd){
         for(int d = 0; d < D; d++){
             p->x[i+d*Np] += p->dr * rnd[d];
+            //having bug
         }
         return;
     }
     void updateDr(Particles* p, double a){
         p->dr *= a;
         return;
+    }
+    bool updateMem(Particles* p, double L){
+        bool result = false;
+        double Lh = 0.5 * L;
+        double dx;
+        double frag = 0.25 * a_max * a_max;
+        for(int i = 0; i < D * Np; i++){
+            dx = (p->x[i] - p->mem[i]);
+            if(dx > Lh){dx -= L;}
+            if(dx < -Lh){dx += L;}
+            if(dx > frag){
+                result = true;
+                break;
+            }
+        }
+        if(result){
+            memcpy(p->mem, p->x, D * Np * sizeof(double));
+        }
+        return result;
     }
 }

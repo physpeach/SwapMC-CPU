@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <math.h>
+#include <string.h>
 #include "../hpp/MT.hpp"
 #include "../hpp/conf.hpp"
 
@@ -11,6 +12,7 @@ namespace PhysPeach{
         double *diam;
         double V;
         double *x;
+        double *mem;
         double dr;
     };
     void createParticles(Particles*);
@@ -19,6 +21,7 @@ namespace PhysPeach{
     void swapDiam(Particles*, int, int);
     void kickParticle(Particles*, int, double*);
     void updateDr(Particles*, double);
+    bool updateMem(Particles*, double);
 }
 
 #endif

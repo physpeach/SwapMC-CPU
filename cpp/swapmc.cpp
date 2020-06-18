@@ -158,6 +158,11 @@ namespace PhysPeach {
             count = 0;
             kick = 0;
         }
+        
+        bool mustUpdateCells = updateMem(&s->p, s->L);
+        if(mustUpdateCells){
+            updateCells(&s->c, s->L, s->p.x);
+        }
         return;
     }
 }
