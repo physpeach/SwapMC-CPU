@@ -76,6 +76,9 @@ namespace PhysPeach {
         s->trial = 0;
         s->accept = 0;
         s->t = 0.;
+        s->trajectory.open("test.txt");
+        s->pos.open("last.txt");
+
         createParticles(&s->p);
         s->L = pow(s->p.V/Phi_init, 1./(double)D);
         scatterParticles(&s->p, s->L, createCells(&s->c, s->L));
@@ -84,12 +87,16 @@ namespace PhysPeach {
     }
 
     void deleteSwapMC(SwapMC* s){
+        s->trajectory.close();
+        s->pos.close();
         deleteParticles(&s->p);
         deleteCells(&s->c);
         return;
     }
 
     void updateSwapMC(SwapMC* s){
+        readSwapMC(s);
+
         double Up, Uptry;
         double judge;
 
@@ -162,6 +169,21 @@ namespace PhysPeach {
         bool mustUpdateCells = updateMem(&s->p, s->L);
         if(mustUpdateCells){
             updateCells(&s->c, s->L, s->p.x);
+        }
+        return;
+    }
+    void readSwapMC(SwapMC* s){
+        static double nexttime = 0;
+        if (s->t >= nexttime){
+            s->trajectory << s->t << " ";
+            for(int n = 0; n < Np; n++){
+                s->trajectory << s->p.diam[n] << " ";
+                    for(int d = 0; d < D; d++){
+                        s->trajectory << s->p.x[n+d*Np] << " ";
+                    }
+            }
+            s->trajectory << std::endl;
+            nexttime += 0.1;
         }
         return;
     }

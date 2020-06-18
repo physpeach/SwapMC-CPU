@@ -2,6 +2,7 @@
 #define PARTICLES_CUH
 
 #include <iostream>
+#include <fstream>
 #include <math.h>
 #include <string.h>
 #include "../hpp/MT.hpp"
@@ -22,6 +23,7 @@ namespace PhysPeach{
     void kickParticle(Particles*, int, double, double*);
     void updateDr(Particles*, double);
     bool updateMem(Particles*, double);
+    void readParticles(Particles*, std::ofstream*);
 }
 
 #endif

@@ -105,4 +105,14 @@ namespace PhysPeach{
         }
         return result;
     }
+    void readParticles(Particles* p, std::ofstream* out){
+        for(int n = 0; n < Np; n++){
+            *out << p->diam[n] << " ";
+            for(int d = 0; d < D; d++){
+                *out << p->x[n+d*Np] << " ";
+            }
+            *out << std::endl;
+        }
+        return;
+    }
 }
