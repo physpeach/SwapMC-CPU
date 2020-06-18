@@ -9,12 +9,13 @@
 
 namespace PhysPeach{
     struct SwapMC {
-        Particles p;
-        Cells c;
         double L;
         double T;
         int trial;
         int accept;
+        double t; //dt :~ dr / (2. * Np)
+        Particles p;
+        Cells c;
     };
     void createSwapMC(SwapMC*);
     void deleteSwapMC(SwapMC*);

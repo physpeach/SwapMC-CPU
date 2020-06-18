@@ -18,6 +18,7 @@ namespace PhysPeach{
     void scatterParticles(Particles*, double, int);
     void swapDiam(Particles*, int, int);
     void kickParticle(Particles*, int, double*);
+    void updateDr(Particles*, double);
 }
 
 #endif

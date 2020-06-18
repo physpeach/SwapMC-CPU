@@ -74,7 +74,8 @@ namespace PhysPeach {
     void createSwapMC(SwapMC* s){
         s->T = T;
         s->trial = 0;
-        s->accept = 0;;
+        s->accept = 0;
+        s->t = 0.;
         createParticles(&s->p);
         s->L = pow(s->p.V/Phi_init, 1./(double)D);
         scatterParticles(&s->p, s->L, createCells(&s->c, s->L));
@@ -91,6 +92,9 @@ namespace PhysPeach {
     void updateSwapMC(SwapMC* s){
         double Up, Uptry;
         double judge;
+
+        static int count = 0;
+        static int kick = 0;
 
         int i = genrand_int32()%Np;
         Up = Upartial(s, i);
@@ -129,6 +133,7 @@ namespace PhysPeach {
             Uptry = Upartial(s, i);
 
             judge = exp(-(Uptry - Up)/T);
+            count++;
             if(judge < genrand_real2()){
                 //reject
                 for(int d = 0; d < D; d++){
@@ -137,9 +142,22 @@ namespace PhysPeach {
                 kickParticle(&s->p, i, rnd);
             }else{
                 s->accept++;
+                s->t += s->p.dr / (2. * (double)Np);
+                kick++;
             }
         }
         s->trial++;
+
+        // should be ac/rj -> 1
+        if(count == 100){
+            if(kick > 55){
+                updateDr(&s->p, 1.1);
+            }else if(kick < 45){
+                updateDr(&s->p, 0.7);
+            }
+            count = 0;
+            kick = 0;
+        }
         return;
     }
 }

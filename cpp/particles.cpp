@@ -75,4 +75,8 @@ namespace PhysPeach{
         }
         return;
     }
+    void updateDr(Particles* p, double a){
+        p->dr *= a;
+        return;
+    }
 }
