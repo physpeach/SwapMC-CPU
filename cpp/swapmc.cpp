@@ -129,7 +129,7 @@ namespace PhysPeach {
                     rndlen2 += rnd[d] * rnd[d];
                 }
             }
-            kickParticle(&s->p, i, rnd);
+            kickParticle(&s->p, i, s->L, rnd);
             Uptry = Upartial(s, i);
 
             judge = exp(-(Uptry - Up)/T);
@@ -139,7 +139,7 @@ namespace PhysPeach {
                 for(int d = 0; d < D; d++){
                     rnd[d] = -rnd[d];
                 }
-                kickParticle(&s->p, i, rnd);
+                kickParticle(&s->p, i, s->L, rnd);
             }else{
                 s->accept++;
                 s->t += s->p.dr / (2. * (double)Np);
@@ -158,7 +158,7 @@ namespace PhysPeach {
             count = 0;
             kick = 0;
         }
-        
+
         bool mustUpdateCells = updateMem(&s->p, s->L);
         if(mustUpdateCells){
             updateCells(&s->c, s->L, s->p.x);

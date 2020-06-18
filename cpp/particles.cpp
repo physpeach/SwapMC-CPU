@@ -73,10 +73,12 @@ namespace PhysPeach{
         return;
     }
 
-    void kickParticle(Particles* p, int i, double* rnd){
+    void kickParticle(Particles* p, int i, double L, double* rnd){
+        double Lh = 0.5 * L;
         for(int d = 0; d < D; d++){
             p->x[i+d*Np] += p->dr * rnd[d];
-            //having bug
+            if(p->x[i+d*Np] > Lh){p->x[i+d*Np] -= L;}
+            if(p->x[i+d*Np] < -Lh){p->x[i+d*Np] += L;}
         }
         return;
     }

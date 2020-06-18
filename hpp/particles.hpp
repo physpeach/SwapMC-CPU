@@ -19,7 +19,7 @@ namespace PhysPeach{
     void deleteParticles(Particles*);
     void scatterParticles(Particles*, double, int);
     void swapDiam(Particles*, int, int);
-    void kickParticle(Particles*, int, double*);
+    void kickParticle(Particles*, int, double, double*);
     void updateDr(Particles*, double);
     bool updateMem(Particles*, double);
 }
