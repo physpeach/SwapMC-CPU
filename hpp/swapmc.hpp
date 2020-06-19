@@ -21,6 +21,8 @@ namespace PhysPeach{
         std::ofstream trajectory;
         std::ofstream pos;
     };
+    double Upartial(SwapMC*);
+    double U(SwapMC*);
     void createSwapMC(SwapMC*);
     void deleteSwapMC(SwapMC*);
     void updateSwapMC(SwapMC*);

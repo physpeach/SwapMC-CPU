@@ -71,6 +71,77 @@ namespace PhysPeach {
 
         return U;
     }
+
+    double U(SwapMC* s){
+        int m;
+        double xij[D], rij, rij2, aij;
+        int ic, jc, kc;
+        int list;
+        double U = 0;
+        double Lh = 0.5 * s->L;
+        double Lc = s->L / s->c.Nc;
+        
+        for(int n = 0; n < Np; n++){
+            ic = (s->p.x[n] + Lh)/Lc;
+            jc = (s->p.x[n+Np] + Lh)/Lc;
+            kc = 0;
+            if(D == 3){
+                kc = (s->p.x[n+Np] + Lh)/Lc;
+            }
+            for(int i = ic - 1; i < ic + 1; i++){
+                for(int j = jc - 1; j < jc + 1; j++){
+                    if(D == 2){
+                        list = (((i+s->c.Nc)%s->c.Nc)*s->c.Nc+((j+s->c.Nc)%s->c.Nc))*s->c.NpC;
+                        for(int l = 1; l <= s->c.cell[list]; l++){
+                            m = s->c.cell[list+l];
+                            if(n < m){
+                                xij[0] = s->p.x[j] - s->p.x[i];
+                                xij[1] = s->p.x[Np+j] - s->p.x[Np+i];
+                                if(xij[0] > Lh){xij[0] -= s->L;}
+                                if(xij[1] > Lh){xij[1] -= s->L;}
+                                if(xij[0] < -Lh){xij[0] += s->L;}
+                                if(xij[1] < -Lh){xij[1] += s->L;}
+                                rij2 = xij[0]*xij[0] + xij[1]*xij[1];
+                                aij = 0.5 * (s->p.diam[i] + s->p.diam[j]);
+                                if(rij2 < aij * aij){
+                                    rij = sqrt(rij2);
+                                    U += 0.5 * (1 - rij/aij) * (1 - rij/aij);
+                                }
+                            }
+                        }
+                    }else if(D == 3){
+                        for(int k = kc - 1; k < kc + 1; k++){
+                            list = ((((i+s->c.Nc)%s->c.Nc)*s->c.Nc+((j+s->c.Nc)%s->c.Nc))*s->c.Nc + ((k+s->c.Nc)%s->c.Nc))*s->c.NpC;
+                            for(int l = 1; l <= s->c.cell[list]; l++){
+                                m = s->c.cell[list+l];
+                                if(n < m){
+                                    xij[0] = s->p.x[j] - s->p.x[i];
+                                    xij[1] = s->p.x[Np+j] - s->p.x[Np+i];
+                                    xij[2] = s->p.x[2*Np+j] - s->p.x[2*Np+i];
+                                    if(xij[0] > Lh){xij[0] -= s->L;}
+                                    if(xij[1] > Lh){xij[1] -= s->L;}
+                                    if(xij[2] > Lh){xij[2] -= s->L;}
+                                    if(xij[0] < -Lh){xij[0] += s->L;}
+                                    if(xij[1] < -Lh){xij[1] += s->L;}
+                                    if(xij[2] < -Lh){xij[2] += s->L;}
+                                    rij2 = xij[0]*xij[0] + xij[1]*xij[1] + xij[2]*xij[2];
+                                    aij = 0.5 * (s->p.diam[i] + s->p.diam[j]);
+                                    if(rij2 < aij * aij){
+                                        rij = sqrt(rij2);
+                                        U += 0.5 * (1 - rij/aij) * (1 - rij/aij);
+                                    }
+                                }
+                            }
+                        }
+                    }else{
+                        std::cout << "dimention err" << std::endl;
+                        exit(1);
+                    }
+                }
+            }
+        }
+        return U;
+    }
     void createSwapMC(SwapMC* s){
         s->T = T;
         s->trial = 0;
@@ -156,12 +227,13 @@ namespace PhysPeach {
         s->trial++;
 
         // should be ac/rj -> 1
-        if(count == 100){
-            if(kick > 55){
-                updateDr(&s->p, 1.1);
-            }else if(kick < 45){
-                updateDr(&s->p, 0.7);
+        if(count == 2*Np){
+            if(kick > 2*Np * 55/100){
+                //updateDr(&s->p, 1.1);
+            }else if(kick < 2*Np * 45/100){
+                //updateDr(&s->p, 0.7);
             }
+            std::cout << "kick: " << 100*kick/count << "/100, dr-> " << s->p.dr << std::endl;
             count = 0;
             kick = 0;
         }
@@ -175,7 +247,7 @@ namespace PhysPeach {
     void readSwapMC(SwapMC* s){
         static double nexttime = 0;
         if (s->t >= nexttime){
-            s->trajectory << s->t << " ";
+            s->trajectory << s->t << " " << U(s) << " ";
             for(int n = 0; n < Np; n++){
                 s->trajectory << s->p.diam[n] << " ";
                     for(int d = 0; d < D; d++){
@@ -183,7 +255,7 @@ namespace PhysPeach {
                     }
             }
             s->trajectory << std::endl;
-            nexttime += 0.1;
+            nexttime += 0.01;
         }
         return;
     }
