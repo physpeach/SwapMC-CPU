@@ -190,7 +190,8 @@ namespace PhysPeach {
             Uptry = Upartial(s, i) + Upartial(s, j);
 
             judge = exp(-(Uptry - Up)/T);
-            if(judge < genrand_real2()){
+            //if(judge < genrand_real2()){
+            if(Uptry - Up > 0) {
                 //reject
                 swapDiam(&s->p, i, j);
             }else{
@@ -203,7 +204,7 @@ namespace PhysPeach {
             while (rndlen2 > 1){
                 rndlen2 = 0;
                 for(int d = 0; d < D; d++){
-                    rnd[d] = genrand_real1();
+                    rnd[d] = 2. * genrand_real1() - 1.;
                     rndlen2 += rnd[d] * rnd[d];
                 }
             }
@@ -212,7 +213,8 @@ namespace PhysPeach {
 
             judge = exp(-(Uptry - Up)/T);
             count++;
-            if(judge < genrand_real2()){
+            //if(judge < genrand_real2()){
+            if(Uptry - Up > 0) {
                 //reject
                 for(int d = 0; d < D; d++){
                     rnd[d] = -rnd[d];
