@@ -1,29 +1,29 @@
 #include "../hpp/swapmc.hpp"
 
 namespace PhysPeach {
-    double Upartial(SwapMC* s, int n){
-        int m;
+    double Upartial(SwapMC* s, int i){
+        int j;
         double xij[D], rij, rij2, aij;
-        int ic, jc, kc;
+        int oc, pc, qc;
         int list;
         double U = 0;
         double Lh = 0.5 * s->L;
         double Lc = s->L / s->c.Nc;
 
-        ic = (s->p.x[n] + Lh)/Lc;
-        jc = (s->p.x[n+Np] + Lh)/Lc;
-        kc = 0;
+        oc = (s->p.x[i] + Lh)/Lc;
+        pc = (s->p.x[i+Np] + Lh)/Lc;
+        qc = 0;
         if(D == 3){
-            kc = (s->p.x[n+Np] + Lh)/Lc;
+            qc = (s->p.x[i+Np] + Lh)/Lc;
         }
 
-        for(int i = ic - 1; i <= ic + 1; i++){
-            for(int j = jc - 1; j <= jc + 1; j++){
+        for(int o = oc - 1; o <= oc + 1; o++){
+            for(int p = pc - 1; p <= pc + 1; p++){
                 if(D == 2){
-                    list = (((i+s->c.Nc)%s->c.Nc)*s->c.Nc+((j+s->c.Nc)%s->c.Nc))*s->c.NpC;
+                    list = (((o+s->c.Nc)%s->c.Nc)*s->c.Nc+((p+s->c.Nc)%s->c.Nc))*s->c.NpC;
                     for(int l = 1; l <= s->c.cell[list]; l++){
-                        m = s->c.cell[list+l];
-                        if(n != m){
+                        j = s->c.cell[list+l];
+                        if(i != j){
                             xij[0] = s->p.x[j] - s->p.x[i];
                             xij[1] = s->p.x[Np+j] - s->p.x[Np+i];
                             if(xij[0] > Lh){xij[0] -= s->L;}
@@ -31,7 +31,7 @@ namespace PhysPeach {
                             if(xij[0] < -Lh){xij[0] += s->L;}
                             if(xij[1] < -Lh){xij[1] += s->L;}
                             rij2 = xij[0]*xij[0] + xij[1]*xij[1];
-                            aij = 0.5 * (s->p.diam[i] + s->p.diam[j]);
+                            aij = 0.5 * (s->p.diam[j] + s->p.diam[i]);
                             if(rij2 < aij * aij){
                                 rij = sqrt(rij2);
                                 U += 0.5 * (1 - rij/aij) * (1 - rij/aij);
@@ -39,11 +39,11 @@ namespace PhysPeach {
                         }
                     }
                 }else if (D == 3){
-                    for(int k = kc - 1; k <= kc + 1; k++){
-                        list = ((((i+s->c.Nc)%s->c.Nc)*s->c.Nc+((j+s->c.Nc)%s->c.Nc))*s->c.Nc + ((k+s->c.Nc)%s->c.Nc))*s->c.NpC;
+                    for(int q = qc - 1; q <= qc + 1; q++){
+                        list = ((((o+s->c.Nc)%s->c.Nc)*s->c.Nc+((p+s->c.Nc)%s->c.Nc))*s->c.Nc + ((q+s->c.Nc)%s->c.Nc))*s->c.NpC;
                         for(int l = 1; l <= s->c.cell[list]; l++){
-                            m = s->c.cell[list+l];
-                            if(n != m){
+                            j = s->c.cell[list+l];
+                            if(i != j){
                                 xij[0] = s->p.x[j] - s->p.x[i];
                                 xij[1] = s->p.x[Np+j] - s->p.x[Np+i];
                                 xij[2] = s->p.x[2*Np+j] - s->p.x[2*Np+i];
@@ -54,7 +54,7 @@ namespace PhysPeach {
                                 if(xij[1] < -Lh){xij[1] += s->L;}
                                 if(xij[2] < -Lh){xij[2] += s->L;}
                                 rij2 = xij[0]*xij[0] + xij[1]*xij[1] + xij[2]*xij[2];
-                                aij = 0.5 * (s->p.diam[i] + s->p.diam[j]);
+                                aij = 0.5 * (s->p.diam[j] + s->p.diam[i]);
                                 if(rij2 < aij * aij){
                                     rij = sqrt(rij2);
                                     U += 0.5 * (1 - rij/aij) * (1 - rij/aij);
@@ -72,28 +72,28 @@ namespace PhysPeach {
     }
 
     double U(SwapMC* s){
-        int m;
+        int j;
         double xij[D], rij, rij2, aij;
-        int ic, jc, kc;
+        int oc, pc, qc;
         int list;
         double U = 0;
         double Lh = 0.5 * s->L;
         double Lc = s->L / s->c.Nc;
         
-        for(int n = 0; n < Np; n++){
-            ic = (s->p.x[n] + Lh)/Lc;
-            jc = (s->p.x[n+Np] + Lh)/Lc;
-            kc = 0;
+        for(int i = 0; i < Np; i++){
+            oc = (s->p.x[i] + Lh)/Lc;
+            pc = (s->p.x[i+Np] + Lh)/Lc;
+            qc = 0;
             if(D == 3){
-                kc = (s->p.x[n+Np] + Lh)/Lc;
+                qc = (s->p.x[i+Np] + Lh)/Lc;
             }
-            for(int i = ic - 1; i <= ic + 1; i++){
-                for(int j = jc - 1; j <= jc + 1; j++){
+            for(int o = oc - 1; o <= oc + 1; o++){
+                for(int p = pc - 1; p <= pc + 1; p++){
                     if(D == 2){
-                        list = (((i+s->c.Nc)%s->c.Nc)*s->c.Nc+((j+s->c.Nc)%s->c.Nc))*s->c.NpC;
+                        list = (((o+s->c.Nc)%s->c.Nc)*s->c.Nc+((p+s->c.Nc)%s->c.Nc))*s->c.NpC;
                         for(int l = 1; l <= s->c.cell[list]; l++){
-                            m = s->c.cell[list+l];
-                            if(n < m){
+                            j = s->c.cell[list+l];
+                            if(i < j){
                                 xij[0] = s->p.x[j] - s->p.x[i];
                                 xij[1] = s->p.x[Np+j] - s->p.x[Np+i];
                                 if(xij[0] > Lh){xij[0] -= s->L;}
@@ -101,7 +101,7 @@ namespace PhysPeach {
                                 if(xij[0] < -Lh){xij[0] += s->L;}
                                 if(xij[1] < -Lh){xij[1] += s->L;}
                                 rij2 = xij[0]*xij[0] + xij[1]*xij[1];
-                                aij = 0.5 * (s->p.diam[i] + s->p.diam[j]);
+                                aij = 0.5 * (s->p.diam[j] + s->p.diam[i]);
                                 if(rij2 < aij * aij){
                                     rij = sqrt(rij2);
                                     U += 0.5 * (1 - rij/aij) * (1 - rij/aij);
@@ -109,11 +109,11 @@ namespace PhysPeach {
                             }
                         }
                     }else if(D == 3){
-                        for(int k = kc - 1; k <= kc + 1; k++){
-                            list = ((((i+s->c.Nc)%s->c.Nc)*s->c.Nc+((j+s->c.Nc)%s->c.Nc))*s->c.Nc + ((k+s->c.Nc)%s->c.Nc))*s->c.NpC;
+                        for(int q = qc - 1; q <= qc + 1; q++){
+                            list = ((((o+s->c.Nc)%s->c.Nc)*s->c.Nc+((p+s->c.Nc)%s->c.Nc))*s->c.Nc + ((q+s->c.Nc)%s->c.Nc))*s->c.NpC;
                             for(int l = 1; l <= s->c.cell[list]; l++){
-                                m = s->c.cell[list+l];
-                                if(n < m){
+                                j = s->c.cell[list+l];
+                                if(i < j){
                                     xij[0] = s->p.x[j] - s->p.x[i];
                                     xij[1] = s->p.x[Np+j] - s->p.x[Np+i];
                                     xij[2] = s->p.x[2*Np+j] - s->p.x[2*Np+i];
@@ -124,7 +124,7 @@ namespace PhysPeach {
                                     if(xij[1] < -Lh){xij[1] += s->L;}
                                     if(xij[2] < -Lh){xij[2] += s->L;}
                                     rij2 = xij[0]*xij[0] + xij[1]*xij[1] + xij[2]*xij[2];
-                                    aij = 0.5 * (s->p.diam[i] + s->p.diam[j]);
+                                    aij = 0.5 * (s->p.diam[j] + s->p.diam[i]);
                                     if(rij2 < aij * aij){
                                         rij = sqrt(rij2);
                                         U += 0.5 * (1 - rij/aij) * (1 - rij/aij);
@@ -177,8 +177,8 @@ namespace PhysPeach {
         Up = Upartial(s, i);
 
         //swap algorithm
-        //bool swap = (genrand_real1() < 0.2);
-        bool swap = false;
+        bool swap = (genrand_real1() < 0.2);
+        swap = false;
         if (swap) {
             //swap diam case
             int j = i;
