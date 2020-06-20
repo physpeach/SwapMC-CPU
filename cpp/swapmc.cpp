@@ -178,7 +178,6 @@ namespace PhysPeach {
 
         //swap algorithm
         bool swap = (genrand_real1() < 0.2);
-        swap = false;
         if (swap) {
             //swap diam case
             int j = i;
@@ -190,8 +189,7 @@ namespace PhysPeach {
             Uptry = Upartial(s, i) + Upartial(s, j);
 
             judge = exp(-(Uptry - Up)/T);
-            //if(judge < genrand_real2()){
-            if(Uptry - Up > 0) {
+            if(judge < genrand_real2()){
                 //reject
                 swapDiam(&s->p, i, j);
             }else{
@@ -213,8 +211,7 @@ namespace PhysPeach {
 
             judge = exp(-(Uptry - Up)/T);
             count++;
-            //if(judge < genrand_real2()){
-            if(Uptry - Up > 0) {
+            if(judge < genrand_real2()){
                 //reject
                 for(int d = 0; d < D; d++){
                     rnd[d] = -rnd[d];
