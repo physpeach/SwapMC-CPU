@@ -17,8 +17,8 @@ namespace PhysPeach {
             kc = (s->p.x[n+Np] + Lh)/Lc;
         }
 
-        for(int i = ic - 1; i < ic + 1; i++){
-            for(int j = jc - 1; j < jc + 1; j++){
+        for(int i = ic - 1; i <= ic + 1; i++){
+            for(int j = jc - 1; j <= jc + 1; j++){
                 if(D == 2){
                     list = (((i+s->c.Nc)%s->c.Nc)*s->c.Nc+((j+s->c.Nc)%s->c.Nc))*s->c.NpC;
                     for(int l = 1; l <= s->c.cell[list]; l++){
@@ -39,7 +39,7 @@ namespace PhysPeach {
                         }
                     }
                 }else if (D == 3){
-                    for(int k = kc - 1; k < kc + 1; k++){
+                    for(int k = kc - 1; k <= kc + 1; k++){
                         list = ((((i+s->c.Nc)%s->c.Nc)*s->c.Nc+((j+s->c.Nc)%s->c.Nc))*s->c.Nc + ((k+s->c.Nc)%s->c.Nc))*s->c.NpC;
                         for(int l = 1; l <= s->c.cell[list]; l++){
                             m = s->c.cell[list+l];
@@ -68,7 +68,6 @@ namespace PhysPeach {
                 }
             }
         }
-
         return U;
     }
 
@@ -88,8 +87,8 @@ namespace PhysPeach {
             if(D == 3){
                 kc = (s->p.x[n+Np] + Lh)/Lc;
             }
-            for(int i = ic - 1; i < ic + 1; i++){
-                for(int j = jc - 1; j < jc + 1; j++){
+            for(int i = ic - 1; i <= ic + 1; i++){
+                for(int j = jc - 1; j <= jc + 1; j++){
                     if(D == 2){
                         list = (((i+s->c.Nc)%s->c.Nc)*s->c.Nc+((j+s->c.Nc)%s->c.Nc))*s->c.NpC;
                         for(int l = 1; l <= s->c.cell[list]; l++){
@@ -110,7 +109,7 @@ namespace PhysPeach {
                             }
                         }
                     }else if(D == 3){
-                        for(int k = kc - 1; k < kc + 1; k++){
+                        for(int k = kc - 1; k <= kc + 1; k++){
                             list = ((((i+s->c.Nc)%s->c.Nc)*s->c.Nc+((j+s->c.Nc)%s->c.Nc))*s->c.Nc + ((k+s->c.Nc)%s->c.Nc))*s->c.NpC;
                             for(int l = 1; l <= s->c.cell[list]; l++){
                                 m = s->c.cell[list+l];
@@ -178,7 +177,8 @@ namespace PhysPeach {
         Up = Upartial(s, i);
 
         //swap algorithm
-        bool swap = (genrand_real1() < 0.2);
+        //bool swap = (genrand_real1() < 0.2);
+        bool swap = false;
         if (swap) {
             //swap diam case
             int j = i;
