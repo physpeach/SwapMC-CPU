@@ -227,12 +227,11 @@ namespace PhysPeach {
 
         // should be ac/rj -> 1
         if(count == 2*Np){
-            if(kick > 2*Np * 55/100){
-                //updateDr(&s->p, 1.1);
-            }else if(kick < 2*Np * 45/100){
-                //updateDr(&s->p, 0.7);
+            if(kick > 2*Np * 53/100){
+                updateDr(&s->p, 1.1);
+            }else if(kick < 2*Np * 46/100){
+                updateDr(&s->p, 0.8);
             }
-            std::cout << "kick: " << 100*kick/count << "/100, dr-> " << s->p.dr << std::endl;
             count = 0;
             kick = 0;
         }
