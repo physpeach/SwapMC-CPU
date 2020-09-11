@@ -141,13 +141,17 @@ namespace PhysPeach {
         }
         return U;
     }
-    void createSwapMC(SwapMC* s){
+    void createSwapMC(SwapMC* s, int id){
         s->T = T;
         s->trial = 0;
         s->accept = 0;
         s->t = 0.;
-        s->trajectory.open("test.txt");
-        s->pos.open("last.txt");
+        std::ostringstream posName;
+        std::ostringstream trajectoryName;
+        posName << "pos_N" << Np << "_Phi" << Phi_init << "_id" << id << ".data";
+        trajectoryName << "traj_N" << Np << "_Phi" << Phi_init << "_id" << id << ".data";
+        s->trajectory.open(trajectoryName.str().c_str());
+        s->pos.open(posName.str().c_str());
 
         createParticles(&s->p);
         s->L = pow(s->p.V/Phi_init, 1./(double)D);

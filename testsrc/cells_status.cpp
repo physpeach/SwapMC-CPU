@@ -5,7 +5,11 @@
 #include "../hpp/MT.hpp"
 #include "../hpp/cells.hpp"
 
+int Np;
+double Phi_init;
 int main() {
+    Np = 300;
+    Phi_init = 0.3;
     init_genrand((unsigned long)time(NULL));
     std::cout << "hello jamming" << std::endl;
     PhysPeach::Cells c;

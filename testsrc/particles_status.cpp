@@ -5,11 +5,15 @@
 #include "../hpp/MT.hpp"
 #include "../hpp/particles.hpp"
 
+int Np;
+double Phi_init;
 int main() {
+    Np = 300;
+    Phi_init = 0.3;
     init_genrand((unsigned long)time(NULL));
     std::cout << "hello jamming" << std::endl;
     PhysPeach::Particles p;
-    PhysPeach::createParticles(&p);
+    PhysPeach::createParticles(&p, 0);
     double L = pow(p.V/Phi_init, 1./(double)D);
     int Nc = 9;
     PhysPeach::scatterParticles(&p, L, Nc);
