@@ -148,8 +148,8 @@ namespace PhysPeach {
         s->t = 0.;
         std::ostringstream posName;
         std::ostringstream trajectoryName;
-        posName << "pos_N" << Np << "_Phi" << Phi_init << "_id" << id << ".data";
-        trajectoryName << "traj_N" << Np << "_Phi" << Phi_init << "_id" << id << ".data";
+        posName << "../pos/pos_N" << Np << "_Phi" << Phi_init << "_id" << id << ".data";
+        trajectoryName << "../traj/traj_N" << Np << "_Phi" << Phi_init << "_id" << id << ".data";
         s->trajectory.open(trajectoryName.str().c_str());
         s->pos.open(posName.str().c_str());
 
