@@ -150,8 +150,10 @@ namespace PhysPeach {
         std::ostringstream trajectoryName;
         posName << "../pos/pos_N" << Np << "_Phi" << Phi_init << "_id" << id << ".data";
         trajectoryName << "../traj/traj_N" << Np << "_Phi" << Phi_init << "_id" << id << ".data";
-        s->trajectory.open(trajectoryName.str().c_str());
         s->pos.open(posName.str().c_str());
+        if (id == 0 || id == 1){
+            s->trajectory.open(trajectoryName.str().c_str());
+        }
 
         createParticles(&s->p);
         s->L = pow(s->p.V/Phi_init, 1./(double)D);
@@ -160,16 +162,20 @@ namespace PhysPeach {
         return;
     }
 
-    void deleteSwapMC(SwapMC* s){
-        s->trajectory.close();
+    void deleteSwapMC(SwapMC* s, int id){
         s->pos.close();
+        if (id == 0 || id == 1){
+            s->trajectory.close();
+        }
         deleteParticles(&s->p);
         deleteCells(&s->c);
         return;
     }
 
-    void updateSwapMC(SwapMC* s){
-        readSwapMC(s);
+    void updateSwapMC(SwapMC* s, int id){
+        if (id == 0 || id == 1){
+            readSwapMC(s);
+        }
 
         double Up, Uptry;
         double judge;

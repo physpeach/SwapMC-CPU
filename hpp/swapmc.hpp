@@ -25,8 +25,8 @@ namespace PhysPeach{
     double Upartial(SwapMC*);
     double U(SwapMC*);
     void createSwapMC(SwapMC*, int);
-    void deleteSwapMC(SwapMC*);
-    void updateSwapMC(SwapMC*);
+    void deleteSwapMC(SwapMC*, int);
+    void updateSwapMC(SwapMC*, int);
     void readSwapMC(SwapMC*);
 }
 

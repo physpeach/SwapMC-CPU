@@ -2,6 +2,7 @@
 #define CELLS_HPP
 
 #include <iostream>
+#include <stdlib.h>
 #include "../hpp/conf.hpp"
 
 namespace PhysPeach{

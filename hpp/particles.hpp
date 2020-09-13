@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <stdlib.h>
 #include <math.h>
 #include <string.h>
 #include "../hpp/MT.hpp"

@@ -22,6 +22,6 @@ int main() {
     std::cout << "Nc: " << c.Nc << std::endl;
     std::cout << "Lc: " << L/c.Nc << " > " << 2. * a_max << std::endl;
     std::cout << "NpC: " << c.NpC << std::endl;
-    PhysPeach::deleteCells(&c);
+    PhysPeach::deleteCells(&c, 0);
     return 0;
 }

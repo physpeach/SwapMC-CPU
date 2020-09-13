@@ -52,6 +52,6 @@ int main() {
     std::cout << "packing: " << p.V << std::endl;
     std::cout << "packing ratio: " << p.V/PhysPeach::powInt(L, D) << " ~ " << Phi_init << std::endl;
     std::cout << "x_mean1: " << x_mean[0]/(double)Np << ", x_mean2: " << x_mean[1]/(double)Np << std::endl;
-    PhysPeach::deleteParticles(&p);
+    PhysPeach::deleteParticles(&p, 0);
     return 0;
 }

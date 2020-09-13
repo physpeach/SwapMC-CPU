@@ -15,7 +15,7 @@ int main() {
     PhysPeach::SwapMC s;
     PhysPeach::createSwapMC(&s, 0);
     for(int i = 0; i < 100; i++){
-        PhysPeach::updateSwapMC(&s);
+        PhysPeach::updateSwapMC(&s, 0);
     }
     for (int i = 0; i < Np; i++){
             std::cout << i << " diam: ";
@@ -34,6 +34,6 @@ int main() {
             std::cout << i << " " << s.c.cell[i] << std::endl;
         }
     std::cout << "box length: " << s.L << std::endl;
-    PhysPeach::deleteSwapMC(&s);
+    PhysPeach::deleteSwapMC(&s, 0);
     return 0;
 }
