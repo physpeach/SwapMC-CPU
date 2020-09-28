@@ -3,7 +3,7 @@
 namespace PhysPeach{
     int createCells(Cells *c, double L){
         c->Nc = (int)(L/(2. * a_max));
-        double buf = 2.3;
+        double buf = 3.;
         c->NpC = (int)(buf * (double)Np/ (double)powInt(c->Nc, D));
         int NoC = powInt(c->Nc, D)*c->NpC;
         c->cell = (int*)malloc(NoC*sizeof(int));
