@@ -10,11 +10,10 @@ int Np;
 double Phi_init;
 int main(int argc, char** argv) {
     int ID = atoi(argv[1]);
+    init_genrand((unsigned long)time(NULL)*ID + ID);
     Np = atof(argv[2]);
     Phi_init = atof(argv[3]);
     double time = atof(argv[4]);
-
-    init_genrand((unsigned long)time(NULL)*ID + ID);
     
     std::cout << "-- hello jamming --" << std::endl;
     std::cout << "ID   : " << ID << std::endl;
