@@ -143,8 +143,6 @@ namespace PhysPeach {
     }
     void createSwapMC(SwapMC* s, int id){
         s->T = T;
-        s->trial = 0;
-        s->accept = 0;
         s->t = 0.;
         std::ostringstream posName;
         std::ostringstream trajectoryName;
@@ -202,8 +200,6 @@ namespace PhysPeach {
             if(judge < genrand_real2()){
                 //reject
                 swapDiam(&s->p, i, j);
-            }else{
-                s->accept++;
             }
         }else{
             //kick a particle case
@@ -228,18 +224,16 @@ namespace PhysPeach {
                 }
                 kickParticle(&s->p, i, s->L, rnd);
             }else{
-                s->accept++;
                 s->t += s->p.dr / (2. * (double)Np);
                 kick++;
             }
         }
-        s->trial++;
 
-        // should be ac/rj -> 1
+        // should be ac/rj -> 0.23
         if(count == 2*Np){
-            if(kick > 2*Np * 53/100){
+            if(kick > 2*Np * 26/100){
                 updateDr(&s->p, 1.1);
-            }else if(kick < 2*Np * 46/100){
+            }else if(kick < 2*Np * 19/100){
                 updateDr(&s->p, 0.8);
             }
             count = 0;

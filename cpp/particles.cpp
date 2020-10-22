@@ -84,6 +84,9 @@ namespace PhysPeach{
     }
     void updateDr(Particles* p, double a){
         p->dr *= a;
+        if(p->dr > 0.5 * a_max){
+            p->dr = 0.5 * a_max;
+        }
         return;
     }
     bool updateMem(Particles* p, double L){
