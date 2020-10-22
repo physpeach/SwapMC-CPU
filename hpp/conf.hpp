@@ -8,7 +8,7 @@ const double pi = 3.141592653589793;
 const int D = 2;
 extern int Np;
 extern double Phi_init;
-const double T = 10e-6;
+const double T = 1.0e-6;
 const double a0 = 1.;
 const double a_min = 0.7253;
 const double a_max = 1.6095;
