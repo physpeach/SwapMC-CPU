@@ -144,15 +144,6 @@ namespace PhysPeach {
     void createSwapMC(SwapMC* s, int id){
         s->T = T;
         s->t = 0.;
-        std::ostringstream posName;
-        std::ostringstream trajectoryName;
-        posName << "../pos/pos_N" << Np << "_Phi" << Phi_init << "_id" << id << ".data";
-        trajectoryName << "../traj/traj_N" << Np << "_Phi" << Phi_init << "_id" << id << ".data";
-        s->pos.open(posName.str().c_str());
-        if (id == 0 || id == 1){
-            s->trajectory.open(trajectoryName.str().c_str());
-        }
-
         createParticles(&s->p);
         s->L = pow(s->p.V/Phi_init, 1./(double)D);
         scatterParticles(&s->p, s->L, createCells(&s->c, s->L));
@@ -161,19 +152,12 @@ namespace PhysPeach {
     }
 
     void deleteSwapMC(SwapMC* s, int id){
-        s->pos.close();
-        if (id == 0 || id == 1){
-            s->trajectory.close();
-        }
         deleteParticles(&s->p);
         deleteCells(&s->c);
         return;
     }
 
-    void updateSwapMC(SwapMC* s, int id){
-        if (id == 0 || id == 1){
-            readSwapMC(s);
-        }
+    int updateSwapMC(SwapMC* s, int id){
 
         double Up, Uptry;
         double judge;
@@ -244,21 +228,56 @@ namespace PhysPeach {
         if(mustUpdateCells){
             updateCells(&s->c, s->L, s->p.x);
         }
-        return;
+        return i;
     }
-    void readSwapMC(SwapMC* s){
-        static double nexttime = 0;
-        if (s->t >= nexttime){
-            s->trajectory << s->t << " " << U(s) << " ";
-            for(int n = 0; n < Np; n++){
-                s->trajectory << s->p.diam[n] << " ";
-                    for(int d = 0; d < D; d++){
-                        s->trajectory << s->p.x[n+d*Np] << " ";
-                    }
-            }
-            s->trajectory << std::endl;
-            nexttime += 0.01;
+
+    void equilibrateSwapMC(SwapMC* s, int id){
+
+        double Fs = 1.;
+        double *fs;
+        double fs1;
+        fs = (double*)malloc(Np*sizeof(double));
+
+        double *x0;
+        x0 = (double*)malloc(D*Np*sizeof(double));
+
+        double k = 2 * pi / 1.; //aav = 1
+        int q1 = (int)(k * s->L / (2. * pi));
+        double k1 = 2 * pi*q1 / s->L;
+        double k2 = 2 * pi*(q1 + 1) / s->L;
+
+        if ((k - k1) <= (k2 - k)){ k = k1;}
+        else{ k = k2;}
+
+        while(s->t < 10.){
+            updateSwapMC(s, id);
         }
+        s->t = 0.;
+
+        int n;
+        double dx[D];
+        for(int loop = 0; loop < 10; loop++){
+            memcpy(x0, s->p.x, D * Np * sizeof(double));
+            Fs = 1.;
+            for(int i = 0; i < Np; i++){
+                fs[i] = 1. / (double)Np;
+            }
+            while(Fs > 0.1){
+                n = updateSwapMC(s, id);
+                Fs -= fs[n];
+                fs[n] = 0.;
+                for(int d = 0; d < D; d++){
+                    dx[d] = x0[d*Np + n] - s->p.x[d*Np + n];
+                    fs[n] += cos(k * dx[d]);
+                }
+                fs[n] /= (double)D * Np;
+                Fs += fs[n];
+            }
+        }
+        std::cout << "equilibrated t: " << s->t << std::endl;
+
+        free(x0);
+        free(fs);
         return;
     }
 }

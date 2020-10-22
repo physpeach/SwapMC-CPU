@@ -13,22 +13,30 @@ int main(int argc, char** argv) {
     init_genrand((unsigned long)time(NULL)*ID + ID);
     Np = atof(argv[2]);
     Phi_init = atof(argv[3]);
-    double time = atof(argv[4]);
     
     std::cout << "-- hello jamming --" << std::endl;
     std::cout << "ID   : " << ID << std::endl;
     std::cout << "Np   : " << Np << std::endl;
     std::cout << "Phi  : " << Phi_init << std::endl;
-    std::cout << "Time : " << time << std::endl;
     std::cout << "-------------------" << std::endl << std::endl;
 
     PhysPeach::SwapMC s;
     PhysPeach::createSwapMC(&s, ID);
-    while(s.t < time){
-        PhysPeach::updateSwapMC(&s, ID);
+    PhysPeach::equilibrateSwapMC(&s, 0);
+
+    std::ostringstream fileName;
+    fileName << "../pos/pos_N" << Np << "_Phi" << Phi_init << "_id" << ID << ".data";
+    std::ofstream file;
+
+    file.open(fileName.str().c_str());
+    for(int n = 0; n < Np; n++){
+        file << s.p.diam[n] << " ";
+        for(int d = 0; d < D; d++){
+            file << s.p.x[n+d*Np] << " ";
+        }
+        file << std::endl;
     }
-    PhysPeach::readParticles(&s.p, &s.pos);
-    
+    file.close();
     PhysPeach::deleteSwapMC(&s, ID);
     return 0;
 }

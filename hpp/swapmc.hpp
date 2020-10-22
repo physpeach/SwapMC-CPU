@@ -18,16 +18,13 @@ namespace PhysPeach{
         double t; //dt :~ dr / (2. * Np)
         Particles p;
         Cells c;
-
-        std::ofstream trajectory;
-        std::ofstream pos;
     };
     double Upartial(SwapMC*);
     double U(SwapMC*);
     void createSwapMC(SwapMC*, int);
     void deleteSwapMC(SwapMC*, int);
-    void updateSwapMC(SwapMC*, int);
-    void readSwapMC(SwapMC*);
+    int updateSwapMC(SwapMC*, int);
+    void equilibrateSwapMC(SwapMC*, int);
 }
 
 #endif
